@@ -1,0 +1,38 @@
+# secrets
+.env
+.env.*
+!.env.example
+*.pem
+credentials
+.aws/
+
+# python
+.venv/
+.venv*/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+build/
+dist/
+
+# local data
+dynamodb-data/
+*.db
+*.sqlite
+*.sqlite3
+seed_items.json
+checkpoints*/
+
+# evals: oracle self-checks are scratch; real results ARE committed (they back docs/comparison.md)
+evals/.oracle-results/
+
+# editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*:Zone.Identifier
+node_modules/

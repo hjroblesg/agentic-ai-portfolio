@@ -1,0 +1,175 @@
+# The 13 failed cases: error message, synthetic log with stack trace, and the ANSWER KEY.
+# expected.category: product_bug | test_bug | flaky | infra | unknown
+# expected.kb_id: the known issue that explains it, or null when none should match (on purpose).
+failures:
+- id: f01
+  run_id: r41
+  test_name: login_safari
+  error_message: 'TimeoutException: login redirect did not complete after 30s; session cookie missing (third-party cookies
+    blocked in Safari 17)'
+  log: |-
+    [+00.0s] INFO  test_login_safari starting (browser=safari 17.4, grid=selenium-grid-02)
+    [+00.8s] INFO  GET https://checkout.example.test/login
+    [+01.9s] INFO  SSO redirect -> https://sso.example.test/authorize?client=checkout
+    [+31.2s] WARN  cookie 'session_id' not present after redirect (third-party cookies blocked)
+    Traceback (most recent call last):
+      File "tests/checkout/test_login.py", line 48, in test_login_safari
+        WebDriverWait(driver, 30).until(EC.url_contains("/account"))
+      File "selenium/webdriver/support/wait.py", line 105, in until
+        raise TimeoutException(message, screen, stacktrace)
+    selenium.common.exceptions.TimeoutException: Message: login redirect did not complete after 30s
+  expected: {category: product_bug, kb_id: KB-101}
+- id: f02
+  run_id: r42
+  test_name: login_safari
+  error_message: 'TimeoutException: login redirect did not complete after 30s; session cookie missing (third-party cookies
+    blocked in Safari 17)'
+  log: |-
+    [+00.0s] INFO  test_login_safari starting (browser=safari 17.4, grid=selenium-grid-01)
+    [+01.1s] INFO  SSO redirect -> https://sso.example.test/authorize?client=checkout
+    [+31.0s] WARN  cookie 'session_id' not present after redirect (third-party cookies blocked)
+    Traceback (most recent call last):
+      File "tests/checkout/test_login.py", line 48, in test_login_safari
+        WebDriverWait(driver, 30).until(EC.url_contains("/account"))
+    selenium.common.exceptions.TimeoutException: Message: login redirect did not complete after 30s
+  expected: {category: product_bug, kb_id: KB-101}
+- id: f03
+  run_id: r42
+  test_name: apply_coupon
+  error_message: 'AssertionError: coupon SAVE10 not applied; API returned 409 ''coupon already redeemed'' for a new user'
+  log: |-
+    [+00.0s] INFO  test_apply_coupon starting (user=new-user-7f3a@example.test)
+    [+00.4s] INFO  POST /api/v2/cart/coupons {"code": "SAVE10"}
+    [+00.6s] INFO  response 409 {"error": "coupon already redeemed"}
+    Traceback (most recent call last):
+      File "tests/checkout/test_coupons.py", line 31, in test_apply_coupon
+        assert cart.discount == Decimal("10.00"), f"coupon SAVE10 not applied; API returned {r.status_code}"
+    AssertionError: coupon SAVE10 not applied; API returned 409 'coupon already redeemed' for a new user
+  expected: {category: product_bug, kb_id: KB-104}
+- id: f04
+  run_id: r43
+  test_name: search_autocomplete
+  error_message: 'TimeoutError: test container did not become healthy within 120s (Docker layer cache cold on CI runner)'
+  log: |-
+    [+000.0s] INFO  starting service container search-autocomplete:1.14 (runner=ci-runner-07)
+    [+000.2s] INFO  docker pull registry.example.test/search-autocomplete:1.14 (layer cache: MISS)
+    [+090.4s] INFO  image pulled (1.8 GB)
+    [+120.0s] ERROR health check /healthz not ready
+    Traceback (most recent call last):
+      File "tests/search/conftest.py", line 22, in search_service
+        wait_for_healthy(container, timeout=120)
+      File "tests/helpers/containers.py", line 41, in wait_for_healthy
+        raise TimeoutError(f"test container did not become healthy within {timeout}s")
+    TimeoutError: test container did not become healthy within 120s (Docker layer cache cold on CI runner)
+  expected: {category: infra, kb_id: KB-102}
+- id: f05
+  run_id: r43
+  test_name: search_api_latency
+  error_message: 'TimeoutError: search-api service container start exceeded 120s (image pull from registry, cache miss)'
+  log: |-
+    [+000.0s] INFO  starting service container search-api:3.2 (runner=ci-runner-07)
+    [+000.3s] INFO  docker pull registry.example.test/search-api:3.2 (layer cache: MISS)
+    [+120.0s] ERROR container start exceeded 120s
+    Traceback (most recent call last):
+      File "tests/search/conftest.py", line 22, in search_service
+        wait_for_healthy(container, timeout=120)
+    TimeoutError: search-api service container start exceeded 120s (image pull from registry, cache miss)
+  expected: {category: infra, kb_id: KB-102}
+- id: f06
+  run_id: r44
+  test_name: process_payment_high_load
+  error_message: HTTPError 502 Bad Gateway from /v1/payments at 320 rps (load test ramp step 4 of 5)
+  log: |-
+    [+00.0s] INFO  load test ramp: 100 -> 400 rps in 5 steps (60s each)
+    [+48.0s] INFO  step 3 @ 260 rps: p95=410ms errors=0.0%
+    [+61.0s] ERROR step 4 @ 320 rps: 502 Bad Gateway from /v1/payments (error rate 7.4%)
+    Traceback (most recent call last):
+      File "tests/payments/test_load.py", line 39, in test_process_payment_high_load
+        assert error_rate < 0.01, f"HTTPError 502 Bad Gateway from /v1/payments at {rps} rps"
+    AssertionError: HTTPError 502 Bad Gateway from /v1/payments at 320 rps (load test ramp step 4 of 5)
+  expected: {category: product_bug, kb_id: KB-103}
+- id: f07
+  run_id: r45
+  test_name: login_safari
+  error_message: 'TimeoutException: element #user-menu not visible after 30s following SSO redirect on Safari 17'
+  log: |-
+    [+00.0s] INFO  test_login_safari starting (browser=safari 17.4, grid=selenium-grid-02)
+    [+01.0s] INFO  SSO redirect -> https://sso.example.test/authorize?client=checkout
+    [+02.3s] INFO  redirected back to https://checkout.example.test/account
+    [+32.3s] ERROR element #user-menu not visible
+    Traceback (most recent call last):
+      File "tests/checkout/test_login.py", line 52, in test_login_safari
+        WebDriverWait(driver, 30).until(EC.visibility_of_element_located((By.ID, "user-menu")))
+    selenium.common.exceptions.TimeoutException: Message: element #user-menu not visible after 30s
+  expected: {category: product_bug, kb_id: KB-101}
+- id: f08
+  run_id: r47
+  test_name: process_payment_high_load
+  error_message: HTTPError 502 Bad Gateway from /v1/payments at 305 rps; upstream connection pool exhausted
+  log: |-
+    [+00.0s] INFO  load test ramp: 100 -> 400 rps in 5 steps (60s each)
+    [+57.9s] WARN  payments-api: upstream connection pool exhausted (max=100)
+    [+58.2s] ERROR step 4 @ 305 rps: 502 Bad Gateway from /v1/payments (error rate 5.1%)
+    AssertionError: HTTPError 502 Bad Gateway from /v1/payments at 305 rps; upstream connection pool exhausted
+  expected: {category: product_bug, kb_id: KB-103}
+- id: f09
+  run_id: r47
+  test_name: payment_webhook_retry
+  error_message: 'AssertionError: webhook not retried after 500 response; expected 3 attempts, got 1'
+  log: |-
+    [+00.0s] INFO  test_payment_webhook_retry starting (mock receiver delay=12s)
+    [+00.5s] INFO  webhook attempt 1 -> mock receiver (HTTP 500 after 12.0s)
+    [+15.2s] INFO  no further attempts observed
+    Traceback (most recent call last):
+      File "tests/payments/test_webhooks.py", line 88, in test_payment_webhook_retry
+        assert len(receiver.attempts) == 3
+    AssertionError: webhook not retried after 500 response; expected 3 attempts, got 1
+  expected: {category: product_bug, kb_id: KB-107}
+- id: f10
+  run_id: r48
+  test_name: checkout_total_rounding
+  error_message: 'AssertionError: expected order total 59.99 but got 60.00 (rounding applied before discount)'
+  log: |-
+    [+00.0s] INFO  test_checkout_total_rounding starting
+    [+00.3s] INFO  cart subtotal=66.655 discount=10% shipping=0.00
+    [+00.5s] INFO  computed total (rounded before discount) = 60.00
+    Traceback (most recent call last):
+      File "tests/checkout/test_totals.py", line 77, in test_checkout_total_rounding
+        assert order.total == Decimal("59.99")
+    AssertionError: expected order total 59.99 but got 60.00 (rounding applied before discount)
+  expected: {category: product_bug, kb_id: KB-105}
+- id: f11
+  run_id: r49
+  test_name: search_filters_pagination
+  error_message: 'StaleElementReferenceException: results list re-rendered while clicking page 2'
+  log: |-
+    [+00.0s] INFO  test_search_filters_pagination starting (browser=chrome 130)
+    [+02.1s] INFO  applied filters: category=shoes, size=42
+    [+04.2s] INFO  click page 2
+    Traceback (most recent call last):
+      File "tests/search/test_pagination.py", line 63, in test_search_filters_pagination
+        results.find_element(By.LINK_TEXT, "2").click()
+    selenium.common.exceptions.StaleElementReferenceException: Message: results list re-rendered while clicking page 2
+  expected: {category: test_bug, kb_id: KB-106}
+- id: f12
+  run_id: r50
+  test_name: process_payment_high_load
+  error_message: HTTPError 502 Bad Gateway from /v1/payments at 340 rps
+  log: |-
+    [+00.0s] INFO  load test ramp: 100 -> 400 rps in 5 steps (60s each)
+    [+63.5s] ERROR step 4 @ 340 rps: 502 Bad Gateway from /v1/payments (error rate 9.8%)
+    AssertionError: HTTPError 502 Bad Gateway from /v1/payments at 340 rps
+  expected: {category: product_bug, kb_id: KB-103}
+- id: f13
+  run_id: r50
+  test_name: refund_partial
+  error_message: 'AssertionError: refund amount 150.00 MXN expected, ledger shows 149.99 MXN'
+  log: |-
+    [+00.0s] INFO  test_refund_partial starting (order=ORD-5521, amount=150.00 MXN)
+    [+01.4s] INFO  POST /v1/refunds {"order": "ORD-5521", "amount": "150.00", "currency": "MXN"}
+    [+02.6s] INFO  ledger entry REF-9912 amount=149.99 MXN
+    Traceback (most recent call last):
+      File "tests/payments/test_refunds.py", line 54, in test_refund_partial
+        assert ledger.amount == Decimal("150.00")
+    AssertionError: refund amount 150.00 MXN expected, ledger shows 149.99 MXN
+  expected: {category: product_bug, kb_id: null}

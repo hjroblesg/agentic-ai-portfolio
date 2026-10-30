@@ -1,0 +1,32 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadRunsAndCases",
+      "Effect": "Allow",
+      "Action": ["dynamodb:Query", "dynamodb:GetItem", "dynamodb:DescribeTable"],
+      "Resource": [
+        "arn:aws:dynamodb:<REGION>:<ACCOUNT_ID>:table/crash-qa",
+        "arn:aws:dynamodb:<REGION>:<ACCOUNT_ID>:table/crash-qa/index/*"
+      ]
+    },
+    {
+      "Sid": "ReadReportsUnderRunsOnly",
+      "Effect": "Allow",
+      "Action": ["s3:GetObject"],
+      "Resource": "arn:aws:s3:::<REPORTS_BUCKET>/runs/*"
+    },
+    {
+      "Sid": "SearchKnowledgeBase",
+      "Effect": "Allow",
+      "Action": ["s3vectors:QueryVectors", "s3vectors:GetVectors"],
+      "Resource": "arn:aws:s3vectors:<REGION>:<ACCOUNT_ID>:bucket/<VECTOR_BUCKET>/index/qa-docs"
+    },
+    {
+      "Sid": "EmbedQueries",
+      "Effect": "Allow",
+      "Action": ["bedrock:InvokeModel"],
+      "Resource": "arn:aws:bedrock:<REGION>::foundation-model/amazon.titan-embed-text-v2:0"
+    }
+  ]
+}

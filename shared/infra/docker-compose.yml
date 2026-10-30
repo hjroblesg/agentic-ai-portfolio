@@ -1,0 +1,19 @@
+# DynamoDB Local for development and CI-free local evals.
+#   docker compose -f shared/infra/docker-compose.yml up -d
+#   make -C shared seed-local
+# Data persists in the named volume across restarts; `down -v` wipes it.
+services:
+  dynamodb-local:
+    image: amazon/dynamodb-local:latest
+    container_name: dynamodb-local
+    command: ["-jar", "DynamoDBLocal.jar", "-sharedDb", "-dbPath", "/home/dynamodblocal/data"]
+    working_dir: /home/dynamodblocal
+    user: root                       # the image's default user can't write to a fresh volume
+    ports:
+      - "127.0.0.1:8000:8000"        # localhost only
+    volumes:
+      - dynamodb-data:/home/dynamodblocal/data
+    restart: unless-stopped
+
+volumes:
+  dynamodb-data:

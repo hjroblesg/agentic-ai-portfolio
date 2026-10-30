@@ -1,0 +1,12 @@
+# Flaky-test registry (synthetic). status OPEN | CLOSED. duration_ms = duration of the last failure.
+flaky:
+  - {test: login_safari, project: checkout, status: OPEN, last_seen: "2026-10-03", last_run_id: r45,
+     occurrences: 3, duration_ms: 30021, note: "Intermittent 30s timeout after SSO redirect on Safari 17"}
+  - {test: search_autocomplete, project: search, status: OPEN, last_seen: "2026-09-30", last_run_id: r43,
+     occurrences: 2, duration_ms: 120000, note: "Container health check timeout on cold CI runners"}
+  - {test: cart_badge_count, project: checkout, status: CLOSED, last_seen: "2026-09-20", last_run_id: null,
+     occurrences: 4, duration_ms: 4200, note: "Badge count updated after assertion (race condition, fixed with explicit wait)"}
+  - {test: payment_webhook_retry, project: payments, status: OPEN, last_seen: "2026-10-04", last_run_id: r47,
+     occurrences: 2, duration_ms: 15230, note: "Webhook retry not triggered when mock server responds slowly"}
+  - {test: search_sort_price, project: search, status: CLOSED, last_seen: "2026-09-15", last_run_id: null,
+     occurrences: 1, duration_ms: 3100, note: "Sort order unstable for items with equal price (fixed by secondary sort on SKU)"}

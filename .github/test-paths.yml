@@ -1,0 +1,28 @@
+# Which folders' `make test` to run, by changed paths (dorny/paths-filter).
+# Key = folder with a Makefile. Anything that installs qa_shared also re-runs when shared code or fixtures change.
+# Add each project when it lands, e.g.:
+#   projects/03-qa-triage-claude-agent-sdk:
+#     - *common
+#     - *qa_shared
+#     - 'projects/03-qa-triage-claude-agent-sdk/**'
+common: &common
+  - '.github/workflows/tests.yml'
+  - '.github/test-paths.yml'
+qa_shared: &qa_shared
+  - 'shared/qa_shared/**'
+  - 'shared/data/**'
+  - 'shared/pyproject.toml'
+
+shared:
+  - *common
+  - *qa_shared
+  - 'shared/tests/**'
+  - 'shared/Makefile'
+shared/mcp-server:
+  - *common
+  - *qa_shared
+  - 'shared/mcp-server/**'
+evals:
+  - *common
+  - *qa_shared
+  - 'evals/**'

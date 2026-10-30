@@ -1,0 +1,91 @@
+# Run the shared eval cases against one project, on demand. Calls real models and AWS, so it never runs on PRs.
+# Setup (once): see shared/infra/iam/README.md. Repo settings need:
+#   variables  AWS_EVAL_ROLE_ARN, AWS_REGION (optional), QA_REPORTS_BUCKET, QA_VECTOR_BUCKET
+#   secret     ANTHROPIC_API_KEY
+# Runs come from a DynamoDB Local service seeded from the fixtures; reports and the KB come from your AWS account
+# (upload them once with `make -C shared reports kb`).
+name: evals
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Project folder under projects/ (e.g. 03-qa-triage-claude-agent-sdk)"
+        required: true
+        type: string
+      repeats:
+        description: "Runs per case"
+        default: "3"
+        type: string
+      min_pass_rate:
+        description: "Fail the job below this pass rate (0-1)"
+        default: "0"
+        type: string
+
+permissions:
+  contents: read
+  id-token: write          # OIDC: short-lived AWS credentials, no stored keys
+
+concurrency:
+  group: evals-${{ inputs.target }}
+  cancel-in-progress: false
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    services:
+      dynamodb:
+        image: amazon/dynamodb-local:latest
+        ports: ["8000:8000"]
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+      DDB_ENDPOINT: http://localhost:8000
+      QA_TABLE: crash-qa
+      QA_REPORTS_BUCKET: ${{ vars.QA_REPORTS_BUCKET }}
+      QA_VECTOR_BUCKET: ${{ vars.QA_VECTOR_BUCKET }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      TARGET: ${{ inputs.target }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate target
+        run: |
+          [[ "$TARGET" =~ ^[0-9]{2}-[a-z0-9-]+$ ]] || { echo "bad target name: $TARGET"; exit 1; }
+          test -f "projects/$TARGET/adapter.py" || { echo "projects/$TARGET/adapter.py not found"; exit 1; }
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_EVAL_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Seed DynamoDB Local from fixtures
+        run: make -C shared seed-local
+
+      - name: Set up MCP server and project environments
+        run: |
+          make -C shared/mcp-server setup
+          echo "SERVER_PYTHON=$GITHUB_WORKSPACE/shared/mcp-server/.venv/bin/python" >> "$GITHUB_ENV"
+          make -C "projects/$TARGET" setup
+
+      - name: Run evals
+        run: |
+          make -C evals setup
+          evals/.venv/bin/python evals/run_evals.py --target "$TARGET" \
+            --repeats "${{ inputs.repeats }}" --min-pass-rate "${{ inputs.min_pass_rate }}"
+
+      - name: Regenerate comparison
+        if: always()
+        run: evals/.venv/bin/python evals/generate_comparison.py
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-${{ inputs.target }}-${{ github.run_number }}
+          path: |
+            evals/results/*.json
+            docs/comparison.md

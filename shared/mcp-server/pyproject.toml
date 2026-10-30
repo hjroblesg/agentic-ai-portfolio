@@ -1,0 +1,25 @@
+[project]
+name = "qa-data-mcp-server"
+version = "0.1.0"
+description = "Read-only MCP server over the QA data: DynamoDB runs, S3 reports, S3 Vectors known issues"
+requires-python = ">=3.11"
+dependencies = [
+    "mcp>=2,<3",        # MCPServer API; keep this package in its OWN environment (see docs/decisions/0002)
+    "boto3>=1.35",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8", "moto[dynamodb,s3]>=5"]    # tests also need qa_shared: see the Makefile
+
+[project.scripts]
+qa-data-server = "server:main"
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["server"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

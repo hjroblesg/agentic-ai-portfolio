@@ -1,0 +1,148 @@
+# Synthetic nightly test runs (no real company data). 10 runs, 85 cases.
+# Failed cases point to failures.yaml by id. Passing cases carry only timing.
+runs:
+- run_id: r41
+  project: checkout
+  pipeline: nightly
+  executed_at: '2026-09-28T02:00:00Z'
+  duration_ms: 62306
+  cases:
+  - {test: login_safari, status: FAILED, executed_at: '2026-09-28T02:00:00Z', duration_ms: 30012, failure: f01}
+  - {test: login_chrome, status: PASSED, executed_at: '2026-09-28T02:00:30Z', duration_ms: 1209}
+  - {test: add_to_cart, status: PASSED, executed_at: '2026-09-28T02:00:32Z', duration_ms: 4812}
+  - {test: cart_badge_count, status: PASSED, executed_at: '2026-09-28T02:00:37Z', duration_ms: 3086}
+  - {test: apply_coupon, status: PASSED, executed_at: '2026-09-28T02:00:41Z', duration_ms: 2224}
+  - {test: checkout_total_rounding, status: PASSED, executed_at: '2026-09-28T02:00:45Z', duration_ms: 7712}
+  - {test: guest_checkout, status: PASSED, executed_at: '2026-09-28T02:00:52Z', duration_ms: 1288}
+  - {test: shipping_address_validation, status: PASSED, executed_at: '2026-09-28T02:00:54Z', duration_ms: 4382}
+  - {test: order_confirmation_email, status: PASSED, executed_at: '2026-09-28T02:00:59Z', duration_ms: 1234}
+- run_id: r42
+  project: checkout
+  pipeline: nightly
+  executed_at: '2026-10-01T02:00:00Z'
+  duration_ms: 80474
+  cases:
+  - {test: login_safari, status: FAILED, executed_at: '2026-10-01T02:00:00Z', duration_ms: 30008, failure: f02}
+  - {test: login_chrome, status: PASSED, executed_at: '2026-10-01T02:00:30Z', duration_ms: 7673}
+  - {test: add_to_cart, status: PASSED, executed_at: '2026-10-01T02:00:38Z', duration_ms: 8159}
+  - {test: cart_badge_count, status: PASSED, executed_at: '2026-10-01T02:00:48Z', duration_ms: 5357}
+  - {test: apply_coupon, status: FAILED, executed_at: '2026-10-01T02:00:54Z', duration_ms: 3305, failure: f03}
+  - {test: checkout_total_rounding, status: PASSED, executed_at: '2026-10-01T02:00:57Z', duration_ms: 7724}
+  - {test: guest_checkout, status: PASSED, executed_at: '2026-10-01T02:01:06Z', duration_ms: 5352}
+  - {test: shipping_address_validation, status: PASSED, executed_at: '2026-10-01T02:01:12Z', duration_ms: 4327}
+  - {test: order_confirmation_email, status: PASSED, executed_at: '2026-10-01T02:01:17Z', duration_ms: 2474}
+- run_id: r43
+  project: search
+  pipeline: nightly
+  executed_at: '2026-09-30T02:15:00Z'
+  duration_ms: 287071
+  cases:
+  - {test: search_basic_query, status: PASSED, executed_at: '2026-09-30T02:15:00Z', duration_ms: 7024}
+  - {test: search_autocomplete, status: FAILED, executed_at: '2026-09-30T02:15:07Z', duration_ms: 120000, failure: f04}
+  - {test: search_filters_pagination, status: PASSED, executed_at: '2026-09-30T02:17:08Z', duration_ms: 6435}
+  - {test: search_sort_price, status: PASSED, executed_at: '2026-09-30T02:17:16Z', duration_ms: 5133}
+  - {test: search_no_results, status: PASSED, executed_at: '2026-09-30T02:17:21Z', duration_ms: 8327}
+  - {test: search_typo_tolerance, status: PASSED, executed_at: '2026-09-30T02:17:31Z', duration_ms: 2845}
+  - {test: search_category_facets, status: PASSED, executed_at: '2026-09-30T02:17:35Z', duration_ms: 2091}
+  - {test: search_recent_history, status: PASSED, executed_at: '2026-09-30T02:17:38Z', duration_ms: 5603}
+  - {test: search_api_latency, status: FAILED, executed_at: '2026-09-30T02:17:45Z', duration_ms: 120000, failure: f05}
+- run_id: r44
+  project: payments
+  pipeline: nightly
+  executed_at: '2026-10-02T02:30:00Z'
+  duration_ms: 105929
+  cases:
+  - {test: process_payment_card, status: PASSED, executed_at: '2026-10-02T02:30:00Z', duration_ms: 6725}
+  - {test: process_payment_high_load, status: FAILED, executed_at: '2026-10-02T02:30:08Z', duration_ms: 61873, failure: f06}
+  - {test: refund_full, status: PASSED, executed_at: '2026-10-02T02:31:10Z', duration_ms: 1939}
+  - {test: refund_partial, status: PASSED, executed_at: '2026-10-02T02:31:12Z', duration_ms: 4533}
+  - {test: payment_webhook_retry, status: PASSED, executed_at: '2026-10-02T02:31:18Z', duration_ms: 2107}
+  - {test: currency_conversion_mxn, status: PASSED, executed_at: '2026-10-02T02:31:20Z', duration_ms: 2454}
+  - {test: 3ds_challenge_flow, status: PASSED, executed_at: '2026-10-02T02:31:24Z', duration_ms: 5354}
+  - {test: saved_card_tokenization, status: PASSED, executed_at: '2026-10-02T02:31:30Z', duration_ms: 6777}
+  - {test: invoice_pdf_generation, status: PASSED, executed_at: '2026-10-02T02:31:38Z', duration_ms: 6865}
+- run_id: r45
+  project: checkout
+  pipeline: nightly
+  executed_at: '2026-10-03T02:00:00Z'
+  duration_ms: 72140
+  cases:
+  - {test: login_safari, status: FAILED, executed_at: '2026-10-03T02:00:00Z', duration_ms: 30021, failure: f07}
+  - {test: login_chrome, status: PASSED, executed_at: '2026-10-03T02:00:30Z', duration_ms: 5174}
+  - {test: add_to_cart, status: PASSED, executed_at: '2026-10-03T02:00:36Z', duration_ms: 3603}
+  - {test: cart_badge_count, status: PASSED, executed_at: '2026-10-03T02:00:41Z', duration_ms: 4810}
+  - {test: apply_coupon, status: PASSED, executed_at: '2026-10-03T02:00:46Z', duration_ms: 8373}
+  - {test: checkout_total_rounding, status: PASSED, executed_at: '2026-10-03T02:00:55Z', duration_ms: 5222}
+  - {test: guest_checkout, status: PASSED, executed_at: '2026-10-03T02:01:02Z', duration_ms: 4398}
+  - {test: shipping_address_validation, status: PASSED, executed_at: '2026-10-03T02:01:07Z', duration_ms: 1716}
+  - {test: order_confirmation_email, status: PASSED, executed_at: '2026-10-03T02:01:09Z', duration_ms: 1325}
+- run_id: r46
+  project: search
+  pipeline: nightly
+  executed_at: '2026-10-03T02:15:00Z'
+  duration_ms: 54338
+  cases:
+  - {test: search_basic_query, status: PASSED, executed_at: '2026-10-03T02:15:00Z', duration_ms: 7372}
+  - {test: search_autocomplete, status: PASSED, executed_at: '2026-10-03T02:15:08Z', duration_ms: 1884}
+  - {test: search_filters_pagination, status: PASSED, executed_at: '2026-10-03T02:15:10Z', duration_ms: 5955}
+  - {test: search_sort_price, status: PASSED, executed_at: '2026-10-03T02:15:17Z', duration_ms: 8979}
+  - {test: search_no_results, status: PASSED, executed_at: '2026-10-03T02:15:27Z', duration_ms: 8317}
+  - {test: search_typo_tolerance, status: PASSED, executed_at: '2026-10-03T02:15:36Z', duration_ms: 5139}
+  - {test: search_category_facets, status: PASSED, executed_at: '2026-10-03T02:15:41Z', duration_ms: 4840}
+  - {test: search_recent_history, status: PASSED, executed_at: '2026-10-03T02:15:47Z', duration_ms: 5104}
+- run_id: r47
+  project: payments
+  pipeline: nightly
+  executed_at: '2026-10-04T02:30:00Z'
+  duration_ms: 106748
+  cases:
+  - {test: process_payment_card, status: PASSED, executed_at: '2026-10-04T02:30:00Z', duration_ms: 7819}
+  - {test: process_payment_high_load, status: FAILED, executed_at: '2026-10-04T02:30:09Z', duration_ms: 58210, failure: f08}
+  - {test: refund_full, status: PASSED, executed_at: '2026-10-04T02:31:08Z', duration_ms: 6730}
+  - {test: refund_partial, status: PASSED, executed_at: '2026-10-04T02:31:15Z', duration_ms: 3066}
+  - {test: payment_webhook_retry, status: FAILED, executed_at: '2026-10-04T02:31:20Z', duration_ms: 15230, failure: f09}
+  - {test: currency_conversion_mxn, status: PASSED, executed_at: '2026-10-04T02:31:36Z', duration_ms: 2289}
+  - {test: 3ds_challenge_flow, status: PASSED, executed_at: '2026-10-04T02:31:39Z', duration_ms: 2596}
+  - {test: saved_card_tokenization, status: PASSED, executed_at: '2026-10-04T02:31:42Z', duration_ms: 3421}
+- run_id: r48
+  project: checkout
+  pipeline: nightly
+  executed_at: '2026-10-05T02:00:00Z'
+  duration_ms: 41659
+  cases:
+  - {test: login_safari, status: PASSED, executed_at: '2026-10-05T02:00:00Z', duration_ms: 1840}
+  - {test: login_chrome, status: PASSED, executed_at: '2026-10-05T02:00:02Z', duration_ms: 7052}
+  - {test: add_to_cart, status: PASSED, executed_at: '2026-10-05T02:00:11Z', duration_ms: 8468}
+  - {test: cart_badge_count, status: PASSED, executed_at: '2026-10-05T02:00:21Z', duration_ms: 4919}
+  - {test: apply_coupon, status: PASSED, executed_at: '2026-10-05T02:00:27Z', duration_ms: 988}
+  - {test: checkout_total_rounding, status: FAILED, executed_at: '2026-10-05T02:00:28Z', duration_ms: 2140, failure: f10}
+  - {test: guest_checkout, status: PASSED, executed_at: '2026-10-05T02:00:32Z', duration_ms: 5171}
+  - {test: shipping_address_validation, status: PASSED, executed_at: '2026-10-05T02:00:38Z', duration_ms: 2627}
+- run_id: r49
+  project: search
+  pipeline: nightly
+  executed_at: '2026-10-05T02:15:00Z'
+  duration_ms: 49978
+  cases:
+  - {test: search_basic_query, status: PASSED, executed_at: '2026-10-05T02:15:00Z', duration_ms: 7923}
+  - {test: search_autocomplete, status: PASSED, executed_at: '2026-10-05T02:15:08Z', duration_ms: 8233}
+  - {test: search_filters_pagination, status: FAILED, executed_at: '2026-10-05T02:15:16Z', duration_ms: 4410, failure: f11}
+  - {test: search_sort_price, status: PASSED, executed_at: '2026-10-05T02:15:22Z', duration_ms: 3727}
+  - {test: search_no_results, status: PASSED, executed_at: '2026-10-05T02:15:27Z', duration_ms: 2543}
+  - {test: search_typo_tolerance, status: PASSED, executed_at: '2026-10-05T02:15:31Z', duration_ms: 5689}
+  - {test: search_category_facets, status: PASSED, executed_at: '2026-10-05T02:15:37Z', duration_ms: 4058}
+  - {test: search_recent_history, status: PASSED, executed_at: '2026-10-05T02:15:42Z', duration_ms: 6926}
+- run_id: r50
+  project: payments
+  pipeline: nightly
+  executed_at: '2026-10-05T02:30:00Z'
+  duration_ms: 100137
+  cases:
+  - {test: process_payment_card, status: PASSED, executed_at: '2026-10-05T02:30:00Z', duration_ms: 809}
+  - {test: process_payment_high_load, status: FAILED, executed_at: '2026-10-05T02:30:02Z', duration_ms: 63502, failure: f12}
+  - {test: refund_full, status: PASSED, executed_at: '2026-10-05T02:31:06Z', duration_ms: 8805}
+  - {test: refund_partial, status: FAILED, executed_at: '2026-10-05T02:31:15Z', duration_ms: 2875, failure: f13}
+  - {test: payment_webhook_retry, status: PASSED, executed_at: '2026-10-05T02:31:18Z', duration_ms: 6747}
+  - {test: currency_conversion_mxn, status: PASSED, executed_at: '2026-10-05T02:31:26Z', duration_ms: 4723}
+  - {test: 3ds_challenge_flow, status: PASSED, executed_at: '2026-10-05T02:31:31Z', duration_ms: 4746}
+  - {test: saved_card_tokenization, status: PASSED, executed_at: '2026-10-05T02:31:37Z', duration_ms: 2090}
