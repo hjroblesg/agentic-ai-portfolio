@@ -1,0 +1,23 @@
+# Known-issues knowledge base (synthetic), embedded into S3 Vectors by shared/data/kb/load_kb.py.
+# kind: match      -> explains at least one failure in failures.yaml
+#       near_miss  -> similar wording, different cause: must NOT win over the real match
+#       distractor -> unrelated: should never rank near the top
+known_issues:
+  - {id: KB-101, team: web, severity: 2, kind: match, text: "Login fails on Safari 17 when third-party cookies are blocked."}
+  - {id: KB-102, team: ci, severity: 3, kind: match, text: "Nightly pipeline times out when the Docker cache is cold."}
+  - {id: KB-103, team: backend, severity: 1, kind: match, text: "Payment API returns 502 under load above 300 rps."}
+  - {id: KB-104, team: backend, severity: 2, kind: match, text: "Coupon API returns 409 'already redeemed' for brand-new users because redemption cache is keyed by email domain."}
+  - {id: KB-105, team: backend, severity: 2, kind: match, text: "Order total is rounded before the discount is applied, producing totals one cent higher than expected."}
+  - {id: KB-106, team: web, severity: 3, kind: match, text: "StaleElementReferenceException in search pagination: the results list re-renders after filters load."}
+  - {id: KB-107, team: backend, severity: 2, kind: match, text: "Payment webhooks are not retried when the receiver responds slowly; retry policy only triggers on connection errors."}
+  - {id: KB-108, team: web, severity: 3, kind: near_miss, text: "Login fails on Firefox when SameSite=Strict is set on the session cookie."}
+  - {id: KB-109, team: backend, severity: 2, kind: near_miss, text: "Card payments time out during the 3DS challenge when the bank's page takes longer than 60 seconds."}
+  - {id: KB-110, team: ci, severity: 3, kind: near_miss, text: "Playwright browser download fails on CI runners without the proxy CA certificate installed."}
+  - {id: KB-111, team: web, severity: 4, kind: distractor, text: "Dark mode buttons fail WCAG contrast ratio on the settings page."}
+  - {id: KB-112, team: ci, severity: 3, kind: distractor, text: "Jenkins agent runs out of disk space when old Docker images are not pruned."}
+  - {id: KB-113, team: backend, severity: 3, kind: distractor, text: "Report service pods are OOMKilled when exporting more than 50,000 rows to CSV."}
+  - {id: KB-114, team: web, severity: 4, kind: distractor, text: "CSV export shows broken accents when opened in Excel because the file lacks a UTF-8 BOM."}
+  - {id: KB-115, team: backend, severity: 3, kind: distractor, text: "Password reset emails arrive 10 minutes late when the mail queue is backed up."}
+  - {id: KB-116, team: web, severity: 4, kind: distractor, text: "iOS push notifications are not delivered after the app is reinstalled."}
+  - {id: KB-117, team: ci, severity: 4, kind: distractor, text: "Presigned S3 links in nightly emails expire before the team reads them in the morning."}
+  - {id: KB-118, team: web, severity: 3, kind: distractor, text: "Product images load slowly on mobile because they are served without responsive sizes."}

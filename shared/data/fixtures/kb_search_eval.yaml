@@ -1,0 +1,10 @@
+# Retrieval checks for the known-issues index: each query must return `expected` at rank 1.
+# Run with: python shared/data/kb/eval_search.py   (needs AWS: Bedrock + S3 Vectors)
+queries:
+  - {query: "users stuck after logging in on Safari", expected: KB-101}
+  - {query: "CI containers slow to start, cache miss", expected: KB-102}
+  - {query: "payments 502 under heavy traffic", expected: KB-103}
+  - {query: "new customer can't use discount code", expected: KB-104}
+  - {query: "total off by one cent", expected: KB-105}
+  - {query: "element changed while clicking next page", expected: KB-106}
+  - {query: "login broken on Firefox", expected: KB-108}   # near miss: must NOT return KB-101

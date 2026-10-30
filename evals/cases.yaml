@@ -1,0 +1,58 @@
+# Eval cases, run against any implementation with:  python evals/run_evals.py --target <project>
+#
+# request: a TriageRequest. project/run_id are optional hints; implementations may ignore them.
+# expect (every key optional):
+#   findings_from_runs:  expected findings come from the ANSWER KEY in shared/data/fixtures/failures.yaml
+#                        for these runs (grouped by test; category + kb_id + run_ids checked)
+#   findings:            explicit expectations; only the keys you list are checked (kb_id: null = must be null)
+#   forbid_tests:        tests that must NOT appear as findings
+#   answer_must_include / answer_must_not_include:  case-insensitive substrings of `answer`
+#   tools_must_include / tools_must_not_include:    tool short names (mcp__qa-data__x -> x)
+#   min_proposals / max_proposals / proposal_run_ids_include:  bug drafts (never real tickets in evals)
+version: 1
+cases:
+  - id: checkout-repeat-failures
+    request: {question: "Which checkout tests keep failing?", project: checkout}
+    expect:
+      findings_from_runs: [r41, r42, r45, r48]
+      tools_must_include: [failed_cases]
+      max_proposals: 0                  # every failure has a known issue: nothing to file
+
+  - id: why-r50-failed
+    request: {question: "Why did run r50 fail?", run_id: r50}
+    expect:
+      findings_from_runs: [r50]         # includes refund_partial with kb_id null: the negative case
+      answer_must_include: ["KB-103"]
+      tools_must_include: [failed_cases]
+
+  - id: search-known-issues
+    request: {question: "Are the search failures a known issue?", project: search}
+    expect:
+      findings_from_runs: [r43, r49]    # r46 is clean
+      tools_must_include: [failed_cases]
+
+  - id: open-flaky-tests
+    request: {question: "List open flaky tests"}
+    expect:
+      findings:
+        - {test_name: login_safari, category: flaky}
+        - {test_name: search_autocomplete, category: flaky}
+        - {test_name: payment_webhook_retry, category: flaky}
+      forbid_tests: [cart_badge_count, search_sort_price]     # CLOSED
+      tools_must_include: [open_flaky_tests]
+      max_proposals: 0
+
+  - id: report-r44
+    request: {question: "Give me the report for r44", run_id: r44}
+    expect:
+      findings_from_runs: [r44]
+      answer_must_include: ["runs/r44/summary.json"]
+      tools_must_include: [report_link]
+
+  - id: file-bug-r50
+    request: {question: "Why did run r50 fail? File a bug for anything without a known issue.", run_id: r50}
+    expect:
+      findings_from_runs: [r50]
+      min_proposals: 1                  # the refund mismatch
+      max_proposals: 1                  # NOT the 502, which already has KB-103
+      proposal_run_ids_include: [r50]

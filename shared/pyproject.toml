@@ -1,0 +1,25 @@
+[project]
+name = "qa-shared"
+version = "0.1.0"
+description = "Contract, fixtures and clients shared by every QA-triage agent implementation"
+requires-python = ">=3.11"
+# Deliberately no `mcp` here: projects pin different MCP SDK versions. See docs/decisions/0002.
+dependencies = [
+    "pydantic>=2.7",
+    "pyyaml>=6",
+    "requests>=2.31",
+    "boto3>=1.35",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8", "moto[dynamodb,s3]>=5"]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["qa_shared"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
