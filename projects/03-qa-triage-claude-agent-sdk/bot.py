@@ -13,7 +13,6 @@ Slack scopes: app_mentions:read, chat:write, reactions:write. Socket Mode on (en
 import logging
 import os
 
-from dotenv import load_dotenv
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
@@ -108,7 +107,6 @@ def build_app() -> App:
 
 
 if __name__ == "__main__":
-    load_dotenv(agent.REPO / ".env")
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
     log.info("model=%s jira=%s approvers=%s", agent.MODEL,
              "DRY RUN" if jira_client.is_dry_run() else os.getenv("JIRA_BASE_URL"), approvers() or "anyone")

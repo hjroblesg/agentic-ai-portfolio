@@ -19,6 +19,7 @@ import time
 from pathlib import Path
 
 from claude_agent_sdk import AssistantMessage, ClaudeAgentOptions, ResultMessage, ToolUseBlock, query
+from dotenv import load_dotenv
 
 from qa_shared import Trace, TriageOutput, TriageRequest, TriageResult
 
@@ -27,6 +28,7 @@ log = logging.getLogger("qa-agent")
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 SERVER_DIR = REPO / "shared" / "mcp-server"
+load_dotenv(REPO / ".env")              # repo-root .env; variables already set in the shell win
 
 MODEL = os.getenv("TRIAGE_MODEL", "claude-sonnet-5-5")
 MAX_PROPOSALS = 3
