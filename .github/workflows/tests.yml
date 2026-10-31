@@ -13,13 +13,23 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      dirs: ${{ steps.filter.outputs.changes }}
+      dirs: ${{ steps.dirs.outputs.dirs }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
         id: filter
         with:
           filters: .github/test-paths.yml
+      # every top-level key is a filter, including the anchor-only ones (common, qa_shared):
+      # keep only keys that are folders with a Makefile
+      - id: dirs
+        env:
+          CHANGES: ${{ steps.filter.outputs.changes }}
+        run: |
+          dirs=$(echo "$CHANGES" | jq -r '.[]' | while read -r d; do
+            [ -f "$d/Makefile" ] && echo "$d"; done | jq -R . | jq -cs .)
+          echo "dirs=$dirs" >> "$GITHUB_OUTPUT"
+          echo "testing: $dirs"
 
   test:
     needs: changes

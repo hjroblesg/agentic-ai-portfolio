@@ -20,7 +20,7 @@ Pattern tags: `tool-use` · `mcp` · `rag` · `react` · `workflow-graph` · `st
 |---|---|---|---|---|---|---|
 | 01 | `01-tool-use-basics` | 🟢 | `tool-use` | Anthropic Messages API | – | planned |
 | 02 | `02-mcp-server-basics` | 🟢 | `mcp` `rag` | MCP Python SDK, DynamoDB, S3 Vectors | – | planned |
-| 03 | `03-qa-triage-claude-agent-sdk` | 🟡 | `react` `mcp` `structured-output` `human-in-the-loop` | Claude Agent SDK, Slack Bolt, Jira | – | planned |
+| 03 | [`03-qa-triage-claude-agent-sdk`](projects/03-qa-triage-claude-agent-sdk) | 🟡 | `react` `mcp` `structured-output` `human-in-the-loop` | Claude Agent SDK, Slack Bolt, Jira | – | ready |
 | 04 | `04-qa-triage-langgraph` | 🟡 | `workflow-graph` `mcp` `human-in-the-loop` | LangGraph, LangChain MCP adapters | – | planned |
 | 05 | `05-qa-triage-strands-agentcore` | 🔴 | `multi-agent` `mcp` `evals` | Strands Agents, Amazon Bedrock AgentCore | – | planned |
 
