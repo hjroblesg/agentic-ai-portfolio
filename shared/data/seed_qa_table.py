@@ -8,6 +8,7 @@ Create the DynamoDB table and load it from the fixtures (10 runs, 85 cases, 5 fl
 """
 import argparse
 import os
+import sys
 from collections import Counter
 
 from qa_shared.fixtures import load_fixtures, to_dynamodb_items
@@ -58,8 +59,15 @@ def main() -> None:
     if args.local:
         kwargs["endpoint_url"] = os.getenv("DDB_ENDPOINT", "http://localhost:8000")
         kwargs.update(aws_access_key_id="local", aws_secret_access_key="local")   # DynamoDB Local accepts any
+    from botocore.exceptions import EndpointConnectionError
     ddb = boto3.resource("dynamodb", **kwargs)
-    if args.reset and TABLE in ddb.meta.client.list_tables()["TableNames"]:
+    try:
+        tables = ddb.meta.client.list_tables()["TableNames"]
+    except EndpointConnectionError:
+        where = kwargs.get("endpoint_url", f"DynamoDB in {REGION}")
+        sys.exit(f"DynamoDB isn't reachable at {where}. For DynamoDB Local, start it with:\n"
+                 "  docker compose -f shared/infra/docker-compose.yml up -d")
+    if args.reset and TABLE in tables:
         ddb.meta.client.delete_table(TableName=TABLE)
         ddb.meta.client.get_waiter("table_not_exists").wait(TableName=TABLE)
     items = seed(ddb)
