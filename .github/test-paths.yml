@@ -26,3 +26,7 @@ evals:
   - *common
   - *qa_shared
   - 'evals/**'
+projects/03-qa-triage-claude-agent-sdk:
+  - *common
+  - *qa_shared
+  - 'projects/03-qa-triage-claude-agent-sdk/**'

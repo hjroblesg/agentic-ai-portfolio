@@ -1,0 +1,22 @@
+[project]
+name = "qa-triage-claude-agent-sdk"
+version = "0.1.0"
+description = "QA-triage agent on the Claude Agent SDK, with a Slack bot and human-approved Jira bugs"
+requires-python = ">=3.11"
+dependencies = [
+    "claude-agent-sdk>=0.2,<0.3",
+    "slack-bolt>=1.20,<2",
+    "python-dotenv>=1.0",
+    "boto3>=1.35",
+    # qa-shared is installed from ../../shared by `make setup` (editable, not on PyPI)
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8", "moto[dynamodb]>=5"]
+
+[tool.setuptools]
+py-modules = ["agent", "adapter", "bot", "drafts"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
