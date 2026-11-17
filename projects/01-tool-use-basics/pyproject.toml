@@ -1,0 +1,20 @@
+[project]
+name = "tool-use-basics"
+version = "0.1.0"
+description = "The agent loop by hand: Anthropic Messages API, tool_use and tool_result, no framework"
+requires-python = ">=3.11"
+dependencies = [
+    "anthropic>=2,<3",
+    "python-dotenv>=1.0",
+    # qa-shared is installed from ../../shared by `make setup` (fixtures only, no AWS)
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[tool.setuptools]
+py-modules = ["loop", "tools"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

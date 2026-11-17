@@ -1,0 +1,19 @@
+[project]
+name = "mcp-server-basics"
+version = "0.1.0"
+description = "A minimal MCP server, a raw JSON-RPC client and an SDK client, over synthetic fixtures"
+requires-python = ">=3.11"
+dependencies = [
+    "mcp>=2,<3",
+    # qa-shared is installed from ../../shared by `make setup` (fixtures only, no AWS)
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[tool.setuptools]
+py-modules = ["server", "raw_client", "sdk_client"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
