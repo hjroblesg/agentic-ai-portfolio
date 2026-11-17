@@ -30,3 +30,11 @@ projects/03-qa-triage-claude-agent-sdk:
   - *common
   - *qa_shared
   - 'projects/03-qa-triage-claude-agent-sdk/**'
+projects/01-tool-use-basics:
+  - *common
+  - *qa_shared
+  - 'projects/01-tool-use-basics/**'
+projects/02-mcp-server-basics:
+  - *common
+  - *qa_shared
+  - 'projects/02-mcp-server-basics/**'
